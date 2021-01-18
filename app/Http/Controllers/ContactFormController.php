@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+// ここでモデルを呼び出す必要がある
+use App\Models\ContactForm;
+
 class ContactFormController extends Controller
 {
     /**
@@ -25,6 +28,7 @@ class ContactFormController extends Controller
     public function create()
     {
         //
+        return view('contact.create');
     }
 
     /**
@@ -35,7 +39,24 @@ class ContactFormController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // ContactFormモデルをインスタンス化する
+        $contact = new ContactForm;
+        //$_POST['name']
+        //ここの→はメソッドではなくてプロパティ（変数）
+        $contact->your_name = $request->input('your_name');
+        $contact->title = $request->input('title');
+        $contact->email = $request->input('email');
+        $contact->url = $request->input('url');
+        $contact->gender = $request->input('gender');
+        $contact->age = $request->input('age');
+        $contact->contact = $request->input('contact');
+
+        $contact->save();
+
+        return redirect('contact/index');
+
+        // dd($your_name);
+
     }
 
     /**
