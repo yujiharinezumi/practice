@@ -23,6 +23,7 @@ Route::group(['prefix' => 'contact', 'middleware' => 'auth'], function(){
     Route::get('edit/{id}','ContactFormController@edit')->name('contact.edit');
     //store殿以外はidを指定している
     Route::post('update/{id}','ContactFormController@update')->name('contact.update');
+    Route::post('destroy/{id}','ContactFormController@destroy')->name('contact.destroy');
 });
 
 
