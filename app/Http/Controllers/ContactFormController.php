@@ -9,6 +9,8 @@ use App\Models\ContactForm;
 
 use Illuminate\Support\Facades\DB;
 use App\Services\CheckFormData;
+use App\Http\Requests\StoreContactForm;
+
 
 class ContactFormController extends Controller
 {
@@ -48,7 +50,9 @@ class ContactFormController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+
+    //作ったバリデーションフォームを引数に入れる
+    public function store(StoreContactForm $request)
     {
         // ContactFormモデルをインスタンス化する
         $contact = new ContactForm;
