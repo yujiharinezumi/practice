@@ -19,17 +19,46 @@ class ContactFormController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
+
+        $search = $request->input('search');
+        // dd($request);
+
+
+
+
         //Eloquent ORMを使った書き方、全てのデータを取得する
         // $contacts = ContactForm::All();
         //クエリビルダーを使う方法
         //DBファサードを使う
-        $contacts = DB::table('contact_forms')
-        ->select('id','your_name','title','created_at')
-        ->orderBy('created_at','desc')
-        ->get();
+        // $contacts = DB::table('contact_forms')
+        // ->select('id','your_name','title','created_at')
+        // ->orderBy('created_at','desc')
+        // ->paginate(20);
         // dd($contacts);
+
+        //検索フォーム用
+        $query = DB::table('contact_forms');
+
+        if($search != null){
+            $search_split = mb_convert_kana($search, 's');
+
+            $search_split2 = preg_split('/[\s]+/', $search_split,-1,PREG_SPLIT_NO_EMPTY);
+
+            foreach($search_split2 as $value)
+            {
+                $query->where('your_name','like','%'.$value.'%');
+            }
+
+        };
+
+        $query->select('id','your_name','title','created_at',);
+        $query->orderBy('created_at','asc');
+        $contacts = $query->paginate(20);
+
+
+
         return view('contact.index',compact('contacts'));
     }
 
@@ -84,6 +113,7 @@ class ContactFormController extends Controller
     {
         //
         $contact = ContactForm::find($id);
+     
 
         $gender = checkFormData::checkGender($contact);
         $age = checkFormData::checkAge($contact);
